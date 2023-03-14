@@ -45,7 +45,7 @@ const createProduct = (req, res) => {
 	}
 
 	const newPost = {
-		id: (id || products.length + 1).toString(),
+		id: (products.length + 1).toString(),
 		name,
 		description,
 		price,

@@ -40,7 +40,7 @@ const createSeller = (req, res) => {
 		return res.status(400).json({ errors: errors.array() });
 	}
 	const newSeller = {
-		sellerId: (sellerId || sellers.length + 1).toString(),
+		sellerId: (sellers.length + 1).toString(),
 		name,
 		address,
 		merchandise,

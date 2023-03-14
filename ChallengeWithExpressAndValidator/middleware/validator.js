@@ -9,12 +9,7 @@ exports.checkUpdateProduct = [
 		.optional(),
 	body("price").isFloat().optional(),
 	(req, res, next) => {
-		const errors = validationResult(req);
-		console.log(errors);
-		if (!errors.isEmpty()) {
-			return res.status(422).json({ errors: errors.mapped() });
-		}
-		return next();
+		validationResultHandler(req, res, next);
 	},
 ];
 
@@ -25,12 +20,7 @@ exports.checkPostProduct = [
 		.withMessage("Minimal 20 characters on description"),
 	body("price").notEmpty().isFloat(),
 	(req, res, next) => {
-		const errors = validationResult(req);
-		console.log(errors);
-		if (!errors.isEmpty()) {
-			return res.status(422).json({ errors: errors.mapped() });
-		}
-		return next();
+		validationResultHandler(req, res, next);
 	},
 ];
 
@@ -39,12 +29,7 @@ exports.checkUpdateSeller = [
 	body("address").isLength({ min: 5 }).optional(),
 	body("merchandise").isArray().optional(),
 	(req, res, next) => {
-		const errors = validationResult(req);
-		console.log(errors);
-		if (!errors.isEmpty()) {
-			return res.status(422).json({ errors: errors.mapped() });
-		}
-		return next();
+		validationResultHandler(req, res, next);
 	},
 ];
 
@@ -67,11 +52,19 @@ exports.checkPostSeller = [
 			return true;
 		}),
 	(req, res, next) => {
+		validationResultHandler(req, res, next);
+	},
+];
+
+const validationResultHandler = (req, res, next) => {
+	try {
 		const errors = validationResult(req);
 		console.log(errors);
 		if (!errors.isEmpty()) {
 			return res.status(422).json({ errors: errors.mapped() });
 		}
 		return next();
-	},
-];
+	} catch (error) {
+		console.log(error);
+	}
+};
