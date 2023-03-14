@@ -9,29 +9,15 @@ const {
 	createProduct,
 	deleteProduct,
 } = require("../controller/productController");
+const {
+	checkUpdateProduct,
+	checkPostProduct,
+} = require("../middleware/validator");
 
 router.get("/", getProducts);
 router.get("/:id", getProduct);
-router.put(
-	"/:id",
-	body("name").notEmpty().optional(),
-	body("description")
-		.isLength({ min: 20 })
-		.withMessage("Minimal 20 characters on description")
-		.optional(),
-	body("price").isFloat().optional(),
-	updateProduct
-);
-router.post(
-	"/",
-	body("name").notEmpty(),
-	body("description")
-		.isLength({ min: 20 })
-		.withMessage("Minimal 20 characters on description")
-		.optional(),
-	body("price").notEmpty().isFloat(),
-	createProduct
-);
+router.put("/:id", checkUpdateProduct, updateProduct);
+router.post("/", checkPostProduct, createProduct);
 
 router.delete("/:id", deleteProduct);
 
